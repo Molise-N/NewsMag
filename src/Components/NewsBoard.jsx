@@ -6,7 +6,7 @@ const NewsBoard = ({ category }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
+  const url = `https://api.currentsapi.services/v1/search?keywords=Lesotho&language=en&apiKey=${import.meta.env.VITE_API_KEY}`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
