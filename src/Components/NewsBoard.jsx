@@ -6,8 +6,7 @@ const NewsBoard = ({ category }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const url = `https://api.currentsapi.services/v1/search?keywords=Lesotho&language=en&apiKey=${import.meta.env.VITE_API_KEY}`;
-  fetch(url)
+    const url = `http://api.mediastack.com/v1/news?access_key=${import.meta.env.VITE_API_KEY}&countries=ls&categories=${category}`;  fetch(url)
     .then((response) => response.json())
     .then((data) => {
       console.log("API response:", data); // 👈 Log the full API response
