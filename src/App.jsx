@@ -5,7 +5,7 @@ import NewsBoard from "./Components/NewsBoard.jsx";
 
 const App = () => {
 
-    const [category, setCategory] = useState("general");
+    const [category, setCategory] = useState("top");
   return (
     <div>
         <Navbar setCategory={setCategory}/>
