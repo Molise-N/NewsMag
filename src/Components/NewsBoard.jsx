@@ -5,16 +5,12 @@ const NewsBoard = ({ category }) => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const url = `http://api.mediastack.com/v1/news?access_key=${import.meta.env.VITE_API_KEY}&countries=ls&categories=${category}`;  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("API response:", data); // 👈 Log the full API response
-      setArticles(data.articles || []);
-    })
-    .catch((error) => {
-      console.error("Fetch error:", error);
-    });
+useEffect(() => {
+  const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => setArticles(data.results || []))
+    .catch(err => console.error("Failed to fetch news", err));
 }, [category]);
 
 
