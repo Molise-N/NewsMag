@@ -12,12 +12,15 @@ const NewsBoard = ({ category }) => {
   fetch(url)
     .then(res => res.json())
     .then(data => {
-      console.log('API Response:', data); // Log the response
-      if (Array.isArray(data.results)) {
+      console.log('API Response:', data); // Log the full API response
+      if (data.status === "error") {
+        console.error('Error fetching data:', data.results); // Log the error message in the results field
+        setArticles([]);
+      } else if (Array.isArray(data.results)) {
         setArticles(data.results);
       } else {
         console.warn("No valid articles found in API response");
-        setArticles([]); // Fallback to empty array
+        setArticles([]);
       }
       setLoading(false);
     })
@@ -26,7 +29,6 @@ const NewsBoard = ({ category }) => {
       setLoading(false);
     });
 }, [category]);
-
 
   if (loading) return <p className="text-center">Loading...</p>;
 
