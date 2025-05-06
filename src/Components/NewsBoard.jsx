@@ -7,7 +7,7 @@ const NewsBoard = ({ category }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
+  const url = `https://newsdata.io/api/1/news?country=za&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
 
   fetch(url)
     .then(res => res.json())
