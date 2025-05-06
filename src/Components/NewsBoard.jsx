@@ -6,18 +6,18 @@ const NewsBoard = ({ category }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setArticles(data.articles || []);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching articles:", error);
-        setLoading(false);
-      });
-  }, [category]);
+  const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("API response:", data); // 👈 Log the full API response
+      setArticles(data.articles || []);
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+}, [category]);
+
 
   if (loading) return <p className="text-center">Loading...</p>;
 
