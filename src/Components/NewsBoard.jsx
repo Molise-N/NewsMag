@@ -1,46 +1,26 @@
 import React, { useState, useEffect } from "react";
 import NewsItem from "./NewsItem.jsx";
 
-const NewsBoard = ({ category }) => {
+const NewsBoard = ({ query = "Lesotho" }) => {
   const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
+    const url = `https://gnews.io/api/v4/search?q=${query}&lang=en&token=${import.meta.env.VITE_API_KEY}`;
     fetch(url)
       .then(res => res.json())
-      .then(data => {
-        setArticles(data.results || []);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch news", err);
-        setLoading(false);
-      });
-  }, [category]);
-
-  if (loading) return <p className="text-center">Loading...</p>;
+      .then(data => setArticles(data.articles))
+      .catch(err => console.error("Error fetching news:", err));
+  }, [query]);
 
   return (
     <div>
-      <h2 className="text-center">
-        Latest <span className="badge bg-danger">News</span>
-      </h2>
+      <h2 className="text-center">Latest News on <span className="badge bg-danger">{query}</span></h2>
       {articles.length === 0 ? (
-        <p className="text-center">No news available.</p>
+        <p>No news found.</p>
       ) : (
-        articles.map((news, index) => {
-          if (!news.title || !news.description || !news.link) return null;
-          return (
-            <NewsItem
-              key={index}
-              title={news.title}
-              description={news.description}
-              src={news.image_url} // Newsdata uses image_url
-              url={news.link}      // Newsdata uses link, not url
-            />
-          );
-        })
+        articles.map((news, index) => (
+          <NewsItem key={index} title={news.title} description={news.description} src={news.image} url={news.url} />
+        ))
       )}
     </div>
   );
