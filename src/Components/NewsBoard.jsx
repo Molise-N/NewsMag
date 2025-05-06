@@ -5,14 +5,19 @@ const NewsBoard = ({ category }) => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
-  fetch(url)
-    .then(res => res.json())
-    .then(data => setArticles(data.articles || []))
-    .catch(err => console.error("Failed to fetch news", err));
-}, [category]);
-
+  useEffect(() => {
+    const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        setArticles(data.results || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch news", err);
+        setLoading(false);
+      });
+  }, [category]);
 
   if (loading) return <p className="text-center">Loading...</p>;
 
@@ -25,16 +30,14 @@ useEffect(() => {
         <p className="text-center">No news available.</p>
       ) : (
         articles.map((news, index) => {
-          // Check if important fields exist before rendering
-          if (!news.title || !news.description || !news.url) return null;
-
+          if (!news.title || !news.description || !news.link) return null;
           return (
             <NewsItem
               key={index}
               title={news.title}
               description={news.description}
-              src={news.urlToImage}
-              url={news.url}
+              src={news.image_url} // Newsdata uses image_url
+              url={news.link}      // Newsdata uses link, not url
             />
           );
         })
