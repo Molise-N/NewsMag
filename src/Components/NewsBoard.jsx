@@ -7,19 +7,26 @@ const NewsBoard = ({ category }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
+  const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        setArticles(data.results || []);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch news", err);
-        setLoading(false);
-      });
-  }, [category]);
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      console.log('API Response:', data); // Log the response
+      if (Array.isArray(data.results)) {
+        setArticles(data.results);
+      } else {
+        console.warn("No valid articles found in API response");
+        setArticles([]); // Fallback to empty array
+      }
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error("Failed to fetch news", err);
+      setLoading(false);
+    });
+}, [category]);
+
 
   if (loading) return <p className="text-center">Loading...</p>;
 
