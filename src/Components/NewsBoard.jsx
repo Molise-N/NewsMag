@@ -1,27 +1,47 @@
 import React, { useState, useEffect } from "react";
 import NewsItem from "./NewsItem.jsx";
+import placeholderImage from "../assets/news.jpg"; // fallback image
 
 const NewsBoard = ({ category }) => {
   const [articles, setArticles] = useState([]);
-  
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const url = `http://api.mediastack.com/v1/news?access_key=${import.meta.env.VITE_API_KEY}&countries=ls&categories=${category}`;
-    
+    const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
+
     fetch(url)
-      .then((response) => response.json())
-      .then((data) => setArticles(data.data || []))
-      .catch((error) => console.error("Error fetching news:", error));
+      .then(res => res.json())
+      .then(data => {
+        setArticles(data.results || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch news", err);
+        setLoading(false);
+      });
   }, [category]);
+
+  if (loading) return <p className="text-center">Loading...</p>;
 
   return (
     <div>
-      <h2 className="text-center">Latest News from Lesotho</h2>
+      <h2 className="text-center">
+        Latest <span className="badge bg-danger">News</span>
+      </h2>
       {articles.length === 0 ? (
-        <p>No news available at the moment.</p>
+        <p className="text-center">No news available.</p>
       ) : (
-        articles.map((news, index) => (
-          <NewsItem key={index} title={news.title} description={news.description} src={news.image} url={news.url} />
-        ))
+        articles.map((news, index) => {
+          return (
+            <NewsItem
+              key={index}
+              title={news.title}
+              description={news.description}
+              src={news.image_url || placeholderImage}
+              url={news.link}
+            />
+          );
+        })
       )}
     </div>
   );
