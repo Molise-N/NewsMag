@@ -1,4 +1,4 @@
-import image from '../assets/news.jpg';
+import image from './assets/news.jpg';
 
 const NewsItem = ({ title, description, src, url }) => {
   // Fallbacks
