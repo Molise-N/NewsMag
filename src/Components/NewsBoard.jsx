@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NewsItem from "./NewsItem.jsx";
 import placeholderImage from "../assets/news.jpg"; // fallback image
 
-const NewsBoard = ({ category }) => {
+const NewsBoard = ({ category = "top" }) => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
