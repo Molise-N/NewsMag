@@ -9,7 +9,7 @@ useEffect(() => {
   const url = `https://newsdata.io/api/1/news?country=ls&category=${category}&apikey=${import.meta.env.VITE_API_KEY}`;
   fetch(url)
     .then(res => res.json())
-    .then(data => setArticles(data.results || []))
+    .then(data => setArticles(data.articles || []))
     .catch(err => console.error("Failed to fetch news", err));
 }, [category]);
 
